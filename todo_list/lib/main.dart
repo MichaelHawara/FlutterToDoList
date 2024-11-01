@@ -182,6 +182,11 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                             widget.taskList.removeTask(task);
                           });
                         },
+                        onCheckboxChanged: (newValue) {
+                          setState(() {
+                            task.isCompleted = newValue ?? false;
+                          });
+                        },
                       );
                     },
                   ),
@@ -236,8 +241,13 @@ class _TaskListWidgetState extends State<TaskListWidget> {
 class TaskItemWidget extends StatelessWidget {
   final Task task;
   final Function onDelete;
+  final ValueChanged<bool?> onCheckboxChanged;
 
-  const TaskItemWidget({Key? key, required this.task, required this.onDelete})
+  const TaskItemWidget(
+      {Key? key,
+      required this.task,
+      required this.onDelete,
+      required this.onCheckboxChanged})
       : super(key: key);
 
   @override
@@ -250,9 +260,7 @@ class TaskItemWidget extends StatelessWidget {
             children: [
               Checkbox(
                 value: task.isCompleted,
-                onChanged: (newValue) {
-                  task.isCompleted = newValue ?? false;
-                },
+                onChanged: onCheckboxChanged,
               ),
               Expanded(
                 child: Text(
