@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
@@ -13,7 +15,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key}) : super(key: key);
+  const MyHomePage({super.key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -82,28 +84,88 @@ class _MyHomePageState extends State<MyHomePage> {
       context: context,
       builder: (context) {
         String newListName = '';
+        Color listColor = Colors.blueGrey;
 
-        return AlertDialog(
-          title: const Text('Add New List'),
-          content: TextField(
-            onChanged: (value) {
-              newListName = value;
-            },
-            decoration: const InputDecoration(hintText: "List Name"),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                if (newListName.isNotEmpty) {
-                  setState(() {
-                    currLists.add(TaskList(name: newListName));
-                  });
-                }
-                Navigator.of(context).pop();
-              },
-              child: const Text('Add'),
-            ),
-          ],
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: const Text('Add New List'),
+              content: SingleChildScrollView(
+                // Allows scrollable dialog content
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    TextField(
+                      onChanged: (value) {
+                        newListName = value;
+                      },
+                      decoration: const InputDecoration(hintText: "List Name"),
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.circle, color: Colors.red),
+                          onPressed: () {
+                            setState(() {
+                              listColor = Colors.red;
+                            });
+                          },
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.circle, color: Colors.yellow),
+                          onPressed: () {
+                            setState(() {
+                              listColor = Colors.yellow;
+                            });
+                          },
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.circle, color: Colors.green),
+                          onPressed: () {
+                            setState(() {
+                              listColor = Colors.green;
+                            });
+                          },
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.circle, color: Colors.blue),
+                          onPressed: () {
+                            setState(() {
+                              listColor = Colors.blue;
+                            });
+                          },
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.circle, color: Colors.purple),
+                          onPressed: () {
+                            setState(() {
+                              listColor = Colors.purple;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    if (newListName.isNotEmpty) {
+                      setState(() {
+                        currLists.add(
+                            TaskList(name: newListName, themeColor: listColor));
+                      });
+                    }
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Add'),
+                ),
+              ],
+            );
+          },
         );
       },
     );
@@ -124,9 +186,13 @@ class Task {
 
 class TaskList {
   final String name;
+  final Color themeColor;
   final List<Task> tasks;
 
-  TaskList({required this.name}) : tasks = [];
+  TaskList({
+    required this.name,
+    this.themeColor = Colors.black,
+  }) : tasks = [];
 
   void addTask(Task task) {
     tasks.add(task);
@@ -144,7 +210,7 @@ class TaskList {
 class TaskListWidget extends StatefulWidget {
   final TaskList taskList;
 
-  const TaskListWidget({Key? key, required this.taskList}) : super(key: key);
+  const TaskListWidget({super.key, required this.taskList});
 
   @override
   _TaskListWidgetState createState() => _TaskListWidgetState();
@@ -153,12 +219,13 @@ class TaskListWidget extends StatefulWidget {
 class _TaskListWidgetState extends State<TaskListWidget> {
   @override
   Widget build(BuildContext context) {
+    Color lighterShade = widget.taskList.themeColor.withOpacity(0.2);
     return Column(
       children: [
         Container(
           width: double.infinity,
           padding: EdgeInsets.all(16.0),
-          color: Colors.blueGrey[100],
+          color: widget.taskList.themeColor,
           child: Text(
             widget.taskList.name,
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
@@ -167,7 +234,7 @@ class _TaskListWidgetState extends State<TaskListWidget> {
         Expanded(
           child: Container(
             padding: EdgeInsets.all(8.0),
-            color: Colors.blueGrey[100],
+            color: lighterShade,
             child: Column(
               children: [
                 Expanded(
@@ -244,11 +311,10 @@ class TaskItemWidget extends StatelessWidget {
   final ValueChanged<bool?> onCheckboxChanged;
 
   const TaskItemWidget(
-      {Key? key,
+      {super.key,
       required this.task,
       required this.onDelete,
-      required this.onCheckboxChanged})
-      : super(key: key);
+      required this.onCheckboxChanged});
 
   @override
   Widget build(BuildContext context) {
