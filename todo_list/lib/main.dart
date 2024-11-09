@@ -35,13 +35,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('ToDo List App',
-            style: TextStyle(
-              color: Colors.white,
-            )),
-        backgroundColor: Colors.black,
-      ),
       body: Row(
         children: [
           NavigationRail(
@@ -109,7 +102,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           icon: const Icon(Icons.circle, color: Colors.red),
                           onPressed: () {
                             setState(() {
-                              listColor = Colors.red;
+                              listColor = Colors.red.shade900;
                             });
                           },
                         ),
@@ -117,7 +110,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           icon: const Icon(Icons.circle, color: Colors.yellow),
                           onPressed: () {
                             setState(() {
-                              listColor = Colors.yellow;
+                              listColor = Colors.yellow.shade600;
                             });
                           },
                         ),
@@ -125,7 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           icon: const Icon(Icons.circle, color: Colors.green),
                           onPressed: () {
                             setState(() {
-                              listColor = Colors.green;
+                              listColor = Colors.green.shade900;
                             });
                           },
                         ),
@@ -133,7 +126,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           icon: const Icon(Icons.circle, color: Colors.blue),
                           onPressed: () {
                             setState(() {
-                              listColor = Colors.blue;
+                              listColor = Colors.blue.shade900;
                             });
                           },
                         ),
@@ -141,7 +134,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           icon: const Icon(Icons.circle, color: Colors.purple),
                           onPressed: () {
                             setState(() {
-                              listColor = Colors.purple;
+                              listColor = Colors.purple.shade900;
                             });
                           },
                         ),
@@ -228,7 +221,8 @@ class _TaskListWidgetState extends State<TaskListWidget> {
           color: widget.taskList.themeColor,
           child: Text(
             widget.taskList.name,
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            style: TextStyle(
+                color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
           ),
         ),
         Expanded(
